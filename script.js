@@ -35,10 +35,16 @@ function generateLinks() {
     // Generate API links
     const eventsLink = `https://my.uscis.gov/account/case-service/api/cases/${caseNumber}`;
     const statusLink = `https://my.uscis.gov/account/case-service/api/case_status/${caseNumber}`;
+    const locationLink = `https://my.uscis.gov/secure-messaging/api/case-service/receipt_info/${caseNumber}`;
+    const documentsLink = `https://my.uscis.gov/account/case-service/api/cases/${caseNumber}/documents`;
+    const processingTimeLink = `https://my.uscis.gov/account/case-service/api/cases/I-765/processing_times/${caseNumber}`;
     
     // Update links
     document.getElementById('eventsLink').href = eventsLink;
     document.getElementById('statusLink').href = statusLink;
+    document.getElementById('locationLink').href = locationLink;
+    document.getElementById('documentsLink').href = documentsLink;
+    document.getElementById('processingTimeLink').href = processingTimeLink;
     
     // Show API links section
     document.getElementById('apiLinksSection').classList.remove('hidden');
@@ -238,14 +244,14 @@ function renderCasesList() {
                     <!-- Actions -->
                     <div class="flex items-center gap-2 flex-shrink-0">
                         <button onclick="event.stopPropagation(); copyReceiptNumber('${caseData.receiptNumber}')" 
-                                class="bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                                style="padding: 0.5rem; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;"
+                                class="bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                                style="padding: 0.375rem 0.75rem; font-size: 0.75rem; min-width: 3rem;"
                                 title="Copy Receipt Number">
                             <i class="fas fa-copy"></i>
                         </button>
                         <button onclick="event.stopPropagation(); deleteCase('${caseData.receiptNumber}')" 
-                                class="bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                                style="padding: 0.5rem; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;"
+                                class="bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                                style="padding: 0.375rem 0.75rem; font-size: 0.75rem; min-width: 3rem;"
                                 title="Delete Case">
                             <i class="fas fa-trash"></i>
                         </button>
@@ -485,6 +491,9 @@ function formatDateTime(dateString) {
 
 // Show notification
 function showNotification(message, type = 'info') {
+    const container = document.getElementById('notificationContainer');
+    if (!container) return;
+    
     const notification = document.createElement('div');
     const bgColors = {
         'success': 'bg-gradient-to-r from-green-500 to-green-600',
@@ -498,7 +507,7 @@ function showNotification(message, type = 'info') {
         'info': 'fa-info-circle'
     };
     
-    notification.className = `fixed top-4 right-4 px-4 py-3 rounded-lg shadow-xl z-50 fade-in ${bgColors[type]} text-white border border-white border-opacity-20`;
+    notification.className = `px-4 py-3 rounded-lg shadow-xl fade-in ${bgColors[type]} text-white border border-white border-opacity-20 transform transition-all duration-300`;
     notification.innerHTML = `
         <div class="flex items-center text-sm">
             <div class="w-5 h-5 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-2">
@@ -508,11 +517,22 @@ function showNotification(message, type = 'info') {
         </div>
     `;
     
-    document.body.appendChild(notification);
+    container.appendChild(notification);
     
+    // Animate in
     setTimeout(() => {
-        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(0)';
+        notification.style.opacity = '1';
+    }, 10);
+    
+    // Remove after 3 seconds with fade out
+    setTimeout(() => {
         notification.style.transform = 'translateX(100%)';
+        notification.style.opacity = '0';
         setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
+
+
+
+

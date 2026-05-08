@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <title>USCIS Case Tracker - Refined</title>
+    <title>USCIS Case Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -305,6 +305,11 @@
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-6">
+        <!-- In-Page Notifications -->
+        <div id="notificationContainer" class="fixed top-4 right-4 z-50 space-y-2 max-w-sm">
+            <!-- Notifications will appear here -->
+        </div>
+        
         <!-- Warning Section -->
         <section class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6 fade-in">
             <div class="flex items-start space-x-3">
@@ -334,45 +339,103 @@
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus-ring"
                            placeholder="e.g., MSC1234567890">
                 </div>
-                <button onclick="generateLinks()" 
-                        class="w-full sm:w-auto bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-all duration-200 text-sm font-medium focus-ring">
-                    <i class="fas fa-link mr-2"></i>Generate API Links
-                </button>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button onclick="generateLinks()" 
+                            class="sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 text-white px-3 py-2 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 text-sm font-medium focus-ring shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        <i class="fas fa-external-link-alt mr-1"></i>Generate Links
+                    </button>
+                </div>
             </div>
             
             <!-- API Links Section -->
             <div id="apiLinksSection" class="hidden mt-6 p-4 bg-gray-50 rounded-lg">
                 <h3 class="font-semibold text-gray-800 mb-3 text-sm">API Links</h3>
-                <p class="text-xs text-gray-600 mb-4">Click on each link below, copy the JSON response, and paste it in the corresponding section. <strong>Events JSON is required for new cases.</strong></p>
+                <p class="text-xs text-gray-600 mb-4">Click on each link below, copy the response, and paste it in the corresponding section to <strong>visualize events on your case.</strong></p>
                 
                 <div class="space-y-4">
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-history text-blue-600 mr-2"></i>Track Case Events Level Status API
-                            <span class="text-red-500 font-semibold">*</span>
-                        </label>
-                        <p class="text-xs text-gray-600 mb-3">Get detailed case events timeline with timestamps and event codes</p>
-                        <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-2">
+                    <!-- API Buttons Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <!-- Events API -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-history text-blue-600 mr-2 text-sm"></i>
+                                <label class="text-sm font-medium text-gray-700">
+                                    Events API
+                                    <span class="text-red-500 font-semibold">*</span>
+                                </label>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-2">Get detailed case events timeline</p>
                             <a id="eventsLink" href="#" target="_blank" 
-                               class="w-full sm:flex-1 bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-all duration-200 text-center text-sm font-medium focus-ring">
-                                <i class="fas fa-external-link-alt mr-2"></i>Open Case Events API
+                               class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white px-2 py-1.5 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 text-center text-xs font-medium focus-ring shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                                <i class="fas fa-external-link-alt mr-1"></i>Events
+                            </a>
+                        </div>
+                        
+                        <!-- Status API -->
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-3">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-info-circle text-green-600 mr-2 text-sm"></i>
+                                <label class="text-sm font-medium text-gray-700">
+                                    Status API
+                                    <span class="text-gray-400">(Optional)</span>
+                                </label>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-2">Get current case status</p>
+                            <a id="statusLink" href="#" target="_blank" 
+                               class="w-full bg-gradient-to-r from-green-600 to-green-700 text-white px-2 py-1.5 rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-200 text-center text-xs font-medium focus-ring shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                                <i class="fas fa-external-link-alt mr-1"></i>Status
+                            </a>
+                        </div>
+                        
+                        <!-- Location API -->
+                        <div class="bg-purple-50 border border-purple-200 rounded-lg p-3">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-map-marker-alt text-purple-600 mr-2 text-sm"></i>
+                                <label class="text-sm font-medium text-gray-700">
+                                    Location API
+                                    <span class="text-gray-400">(Optional)</span>
+                                </label>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-2">Case location info (Not always available)</p>
+                            <a id="locationLink" href="#" target="_blank" 
+                               class="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white px-2 py-1.5 rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all duration-200 text-center text-xs font-medium focus-ring shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                                <i class="fas fa-map-marker-alt mr-1"></i>Location
+                            </a>
+                        </div>
+                        
+                        <!-- Documents API -->
+                        <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-3">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-file-alt text-indigo-600 mr-2 text-sm"></i>
+                                <label class="text-sm font-medium text-gray-700">
+                                    Documents API
+                                    <span class="text-gray-400">(Optional)</span>
+                                </label>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-2">Get case documents</p>
+                            <a id="documentsLink" href="#" target="_blank" 
+                               class="w-full bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-2 py-1.5 rounded-lg hover:from-indigo-700 hover:to-indigo-800 transition-all duration-200 text-center text-xs font-medium focus-ring shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                                <i class="fas fa-file-alt mr-1"></i>Documents
+                            </a>
+                        </div>
+                        
+                        <!-- Processing Time API -->
+                        <div class="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-clock text-orange-600 mr-2 text-sm"></i>
+                                <label class="text-sm font-medium text-gray-700">
+                                    Processing API
+                                    <span class="text-gray-400">(Optional)</span>
+                                </label>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-2">Processing time estimates</p>
+                            <a id="processingTimeLink" href="#" target="_blank" 
+                               class="w-full bg-gradient-to-r from-orange-600 to-orange-700 text-white px-2 py-1.5 rounded-lg hover:from-orange-700 hover:to-orange-800 transition-all duration-200 text-center text-xs font-medium focus-ring shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                                <i class="fas fa-clock mr-1"></i>Processing
                             </a>
                         </div>
                     </div>
                     
-                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            <i class="fas fa-info-circle text-green-600 mr-2"></i>Track Case Status API
-                            <span class="text-gray-400">(Optional)</span>
-                        </label>
-                        <p class="text-xs text-gray-600 mb-3">Get current case status and detailed status information</p>
-                        <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-2">
-                            <a id="statusLink" href="#" target="_blank" 
-                               class="w-full sm:flex-1 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-all duration-200 text-center text-sm font-medium focus-ring">
-                                <i class="fas fa-external-link-alt mr-2"></i>Open Case Status API
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -445,6 +508,6 @@
         </div>
     </footer>
 
-    <script src="script.js?v=1.5"></script>
+    <script src="script.js?v=2.2"></script>
 </body>
 </html>
