@@ -230,7 +230,7 @@ function renderCasesList() {
                             </div>
                             <div class="flex flex-wrap items-center gap-1">
                                 <span class="bg-blue-100 text-blue-700 rounded" style="font-size: 0.7rem; padding: 0.125rem 0.375rem;">${caseData.formType}</span>
-                                ${caseData.applicantName ? `<span class="bg-gray-100 text-gray-700 rounded truncate max-w-24 sm:max-w-32" style="font-size: 0.7rem; padding: 0.125rem 0.375rem;">${caseData.applicantName}</span>` : ''}
+                                ${caseData.applicantName ? `<span class="bg-gray-100 text-gray-700 rounded truncate max-w-40 sm:max-w-48" style="font-size: 0.7rem; padding: 0.125rem 0.375rem;">${caseData.applicantName}</span>` : ''}
                             </div>
                         </div>
                     </div>
@@ -238,16 +238,16 @@ function renderCasesList() {
                     <!-- Actions -->
                     <div class="flex items-center gap-2 flex-shrink-0">
                         <button onclick="event.stopPropagation(); copyReceiptNumber('${caseData.receiptNumber}')" 
-                                class="bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
-                                style="padding: 0.375rem 0.75rem; font-size: 0.75rem; min-width: 3rem;"
+                                class="bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                                style="padding: 0.5rem; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;"
                                 title="Copy Receipt Number">
-                            <i class="fas fa-copy mr-1"></i>Copy
+                            <i class="fas fa-copy"></i>
                         </button>
                         <button onclick="event.stopPropagation(); deleteCase('${caseData.receiptNumber}')" 
-                                class="bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-                                style="padding: 0.375rem 0.75rem; font-size: 0.75rem; min-width: 3rem;"
+                                class="bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                                style="padding: 0.5rem; width: 2rem; height: 2rem; display: flex; align-items: center; justify-content: center;"
                                 title="Delete Case">
-                            <i class="fas fa-trash mr-1"></i>Delete
+                            <i class="fas fa-trash"></i>
                         </button>
                         <i class="fas fa-chevron-${caseData.expanded ? 'up' : 'down'} text-gray-400" style="font-size: 0.875rem;"></i>
                     </div>
@@ -305,7 +305,7 @@ function renderCasesList() {
                             </div>
                             <div>
                                 <label class="text-xs font-medium text-gray-500">Action Code Date</label>
-                                <p class="font-semibold text-gray-800">${formatDateTime(caseData.statusData.currentActionCodeDate)}</p>
+                                <p class="font-semibold text-gray-800">${caseData.statusData.currentActionCodeDate || 'N/A'}</p>
                             </div>
                         </div>
                     </div>

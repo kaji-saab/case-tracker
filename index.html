@@ -159,6 +159,11 @@
                 gap: 0.5rem !important;
             }
             
+            /* Ensure applicant name has enough space on mobile */
+            .professional-card .bg-gray-100 {
+                max-width: 10rem !important;
+            }
+            
             /* Prevent Safari URL bar hiding */
             body {
                 position: relative !important;
@@ -174,31 +179,19 @@
             }
             
             /* Force mobile icon size - remove all conflicts */
-            @media (max-width: 640px) and (hover: none) and (pointer: coarse) {
-                .professional-card .w-5 {
-                    width: 1rem !important;
-                    height: 1rem !important;
-                    flex-shrink: 0 !important;
-                }
-                
-                .professional-card .fas {
-                    font-size: 0.45rem !important;
-                }
+            .professional-card .w-5 {
+                width: 1rem !important;
+                height: 1rem !important;
+                flex-shrink: 0 !important;
+            }
+            
+            .professional-card .fas {
+                font-size: 0.45rem !important;
             }
         }
         
         /* Desktop optimizations */
         @media (min-width: 641px) {
-            /* Ensure normal desktop sizing */
-            .professional-card .w-5 {
-                width: 1.25rem !important;
-                height: 1.25rem !important;
-            }
-            
-            .professional-card .fas {
-                font-size: 0.875rem !important;
-            }
-            
             .case-card {
                 padding: 1rem !important;
                 margin-bottom: 1rem !important;
@@ -447,11 +440,11 @@
     <!-- Footer -->
     <footer class="bg-gray-800 text-white mt-12 py-6">
         <div class="container mx-auto px-4 text-center">
-            <p class="text-sm">© 2026 USCIS Case Tracker. Not affiliated with U.S. Citizenship and Immigration Services.</p>
+            <p class="text-sm"> 2026 USCIS Case Tracker. Not affiliated with U.S. Citizenship and Immigration Services.</p>
             <p class="text-xs mt-2 text-gray-400">Track your immigration cases with ease</p>
         </div>
     </footer>
 
-    <script src="script.js?v=1.2"></script>
+    <script src="script.js?v=1.5"></script>
 </body>
 </html>
